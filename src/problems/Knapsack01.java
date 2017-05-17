@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.Random;
 
 public class Knapsack01 {
+    // data: https://people.sc.fsu.edu/~jburkardt/datasets/knapsack_01/knapsack_01.html
     // w - weight
     // v - value
     final int N = 10;
@@ -19,7 +20,7 @@ public class Knapsack01 {
     }
     
     int ROOTS = 100;
-    int GENERATIONS = 100;
+    int GENERATIONS = 200;
     public Knapsack01() {
         khoitao();
         for(int gen = 0; gen < GENERATIONS; gen++) {
@@ -48,7 +49,7 @@ public class Knapsack01 {
     
     public void danhgia() {
         for(int i = 0; i < ROOTS; i++) {
-            Root root = roots.get(i);
+            Root root = roots.get(i); roots.remove(i);
             ArrayList<Integer> picked = new ArrayList<Integer>();
             for(int j = 0; j < N; j++)
                 if (root.bins[j] == 1) picked.add(j);
@@ -62,21 +63,14 @@ public class Knapsack01 {
                 root.value -= values[j];
                 picked.remove(0);
             }
+            roots.add(i, root);
         }
     }
     
     ArrayList<Root> parents = new ArrayList<Root>();
     public void luachon() {
-        // sort individuals
-//        Collections.sort(roots, new Comparator<Root>() {
-//            @Override
-//            public int compare(Root o1, Root o2) {
-//                return o2.value - o1.value;
-//            }
-//        });
         
         // apply roulette-wheel method to select parents for the next generation
-        
         int fsum = 0;
         for(Root root : roots) fsum += root.value;
         
